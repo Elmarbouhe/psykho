@@ -14,7 +14,7 @@ UI Component Library: shadcn/ui + Tailwind CSS
 
 Authentication: Firebase Auth (Client-side SDK + Server-side verification)
 
-Database: PostgreSQL (via Prisma ORM)
+Database: PostgreSQL (Neon via Prisma ORM with `@prisma/adapter-neon`)
 
 AI Provider: Google Gemini API (gemini-2.5-flash)
 
@@ -88,63 +88,57 @@ Storage: Save to insights table.
 
 4. Database Schema (PostgreSQL)
 
-users
+### users
+- **id** (String, PK): Matches Firebase UID
+- **email** (String, Optional): To support all Firebase Auth methods
+- **created_at** (Timestamp)
+- **updated_at** (Timestamp)
 
-id (String, PK): Matches Firebase UID
+### daily_logs
+- **id** (UUID, PK)
+- **user_id** (FK -> users.id)
+- **mood** (Enum): 'JOYFUL', 'CALM', 'SAD', 'ANXIOUS'
+- **ai_reflection** (Text)
+- **created_at** (Timestamp)
 
-email (String)
+### chat_sessions
+- **id** (UUID, PK)
+- **user_id** (FK -> users.id)
+- **summary** (Text?)
+- **created_at** (Timestamp)
+- **updated_at** (Timestamp)
 
-created_at (Timestamp)
+### chat_messages
+- **id** (UUID, PK)
+- **session_id** (FK -> chat_sessions.id)
+- **sender** (Enum): 'USER' or 'AI'
+- **content** (Text)
+- **created_at** (Timestamp)
+- **Performance**: Composite index on `(session_id, created_at)` for fast retrieval.
 
-daily_logs
+### user_insights
+- **id** (UUID, PK)
+- **user_id** (FK -> users.id)
+- **work_score** (Int)
+- **love_score** (Int)
+- **friendship_score** (Int)
+- **detected_private_logic** (Text)
+- **created_at** (Timestamp)
+- **updated_at** (Timestamp)
 
-id (UUID, PK)
+---
 
-user_id (FK -> users.id)
+### Critical Safeguards & Recommendations
 
-mood (String): 'Joyful', 'Calm', 'Sad', 'Anxious'
+> [!IMPORTANT]
+> **Firebase-to-Postgres Synchronization**
+> To ensure consistency between Firebase Auth and PostgreSQL:
+> 1. **Server-Side Creation**: When a user signs up on the frontend, trigger a server-side action (Next.js API route or Firebase Cloud Function) to create the User row in Prisma immediately.
+> 2. **Reliability**: Do not rely solely on the client-side to create the user record, as network failures or browser security settings can lead to "missing user" records in the database.
 
-ai_reflection (Text)
-
-created_at (Timestamp)
-
-chat_sessions
-
-id (UUID, PK)
-
-user_id (FK -> users.id)
-
-summary (Text)
-
-created_at (Timestamp)
-
-chat_messages
-
-id (UUID, PK)
-
-session_id (FK -> chat_sessions.id)
-
-sender (String): 'user' or 'ai'
-
-content (Text)
-
-created_at (Timestamp)
-
-user_insights
-
-id (UUID, PK)
-
-user_id (FK -> users.id)
-
-work_score (Int)
-
-love_score (Int)
-
-friendship_score (Int)
-
-detected_private_logic (Text)
-
-created_at (Timestamp)
+> [!TIP]
+> **Auth Edge Cases**
+> The `email` field is marked as optional to support authentication methods that may not provide an email (e.g., Apple's "Hide My Email" or Anonymous logins).
 
 5. API Routes (Next.js)
 

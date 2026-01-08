@@ -5,10 +5,83 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Mood {
+  JOYFUL
+  CALM
+  SAD
+  ANXIOUS
+}
+
+enum Actor {
+  USER
+  AI
+}
+
+model User {
+  id           String        @id // Firebase UID
+  email        String?       @unique // Optional to support all Firebase Auth methods
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  dailyLogs    DailyLog[]
+  chatSessions ChatSession[]
+  insights     UserInsight[]
+
+  @@map("users")
+}
+
+model DailyLog {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mood         Mood
+  aiReflection String   @map("ai_reflection") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("daily_logs")
+}
+
+model ChatSession {
+  id        String        @id @default(uuid())
+  userId    String        @map("user_id")
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  summary   String?       @db.Text
+  messages  ChatMessage[]
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid())
+  sessionId String      @map("session_id")
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sender    Actor
+  content   String      @db.Text
+  createdAt DateTime    @default(now()) @map("created_at")
+
+  // Index for fast message retrieval within a session
+  @@index([sessionId, createdAt])
+  @@map("chat_messages")
+}
+
+model UserInsight {
+  id                   String   @id @default(uuid())
+  userId               String   @map("user_id")
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workScore            Int      @map("work_score")
+  loveScore            Int      @map("love_score")
+  friendshipScore      Int      @map("friendship_score")
+  detectedPrivateLogic String   @map("detected_private_logic") @db.Text
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("user_insights")
 }
