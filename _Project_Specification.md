@@ -142,10 +142,32 @@ Storage: Save to insights table.
 
 5. API Routes (Next.js)
 
-POST /api/chat: Handles sending message to Gemini + saving to DB.
+### Authentication & Sync
+**POST /api/auth/sync**
+- **Purpose**: Synchronizes Firebase User with PostgreSQL.
+- **Architecture**:
+    - **Controller**: `src/app/api/auth/sync/route.ts` (Handles request/response)
+    - **Service**: `src/services/auth-service.ts` (Business logic: Verify Token -> Upsert User)
+    - **Infrastructure**: `src/lib/firebase/admin.ts` (Firebase Admin SDK)
+
+6. Frontend Architecture (React/Next.js)
+
+### Authentication (Clean Architecture)
+- **Infrastructure**: `shadcn/ui` (Components), `firebase/auth` (SDK).
+- **Service Layer**: `src/services/client-auth-service.ts`
+    - Wraps `signInWithPopup` and handles the backend sync API call.
+- **State Management**: `src/components/providers/auth-provider.tsx`
+    - Global `AuthContext` providing `user`, `loading`, `login`, `logout`.
+- **Presentation**:
+    - **Layout**: `src/app/(auth)/layout.tsx` (Premium "Sanctuary" theme with `framer-motion`).
+    - **Page**: `src/app/(auth)/login/page.tsx` (Login UI).
+
+### Route Protection
+- **Strategy**: Client-side layout wrapping (`src/app/dashboard/layout.tsx`).
+- **Behavior**: Redirects unauthenticated users to `/login`.
+
+7. API Routes (Next.js)
 
 POST /api/daily-checkin: Handles mood logging + generating daily insight.
 
 POST /api/analyze-session: Triggers the summarization of a chat to update Life Task scores.
-
-GET /api/user/insights: Fetches data for the "Mirror" dashboard.
