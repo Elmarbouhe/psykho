@@ -32,23 +32,23 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <Card className="border-slate-800 bg-slate-950/50 backdrop-blur-xl shadow-2xl">
+            <Card className="border-border bg-card/50 backdrop-blur-xl shadow-2xl">
                 <CardHeader className="text-center space-y-2">
-                    <CardTitle className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-200 to-teal-200 bg-clip-text text-transparent">
+                    <CardTitle className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                         Welcome to the Sanctuary
                     </CardTitle>
-                    <CardDescription className="text-slate-400">
+                    <CardDescription className="text-muted-foreground">
                         A safe space for your mind to unwind and reflect.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-800/50 text-sm text-slate-400 text-center">
+                    <div className="bg-muted/50 p-4 rounded-lg border border-border/50 text-sm text-muted-foreground text-center">
                         <p>Your journey to inner peace begins with a single step.</p>
                     </div>
 
                     <Button
                         onClick={handleLogin}
-                        className="w-full bg-violet-600 hover:bg-violet-700 text-white transition-all duration-300 h-11"
+                        className="w-full transition-all duration-300 h-11"
                         size="lg"
                     >
                         <LogIn className="mr-2 h-4 w-4" />
