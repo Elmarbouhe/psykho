@@ -27,6 +27,11 @@ enum Actor {
 model User {
   id           String        @id // Firebase UID
   email        String?       @unique // Optional to support all Firebase Auth methods
+  name         String?
+  age          Int?
+  occupation   String?
+  currentGoal  String?       @map("current_goal")
+  safeSpace    String?       @map("safe_space") @db.Text
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   dailyLogs    DailyLog[]
