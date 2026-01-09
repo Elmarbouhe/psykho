@@ -6,8 +6,8 @@ This guide documents the **Clean Architecture** authentication flow that synchro
 
 ## 🏗 High-Level Architecture
 
-Our system follows a **Uni-directional Sync** pattern:
-1. **Frontend**: Authenticates the user with Firebase (Google Popup).
+Our system follows a **Uni-directional Sync** pattern for both **Google OAuth** and **Email/Password** authentication:
+1. **Frontend**: Authenticates the user with Firebase.
 2. **Backend**: Verifies the ID Token and Upserts (Create/Update) the user in PostgreSQL.
 
 ```mermaid
@@ -18,8 +18,12 @@ sequenceDiagram
     participant Backend as Next.js API (/api/auth/sync)
     participant DB as PostgreSQL (Neon)
 
-    User->>Client: Click "Continue with Google"
-    Client->>Firebase: signInWithPopup()
+    User->>Client: Click "Sign Up" or "Login"
+    alt Google
+        Client->>Firebase: loginWithGoogle()
+    else Email/Password
+        Client->>Firebase: registerWithEmail() / loginWithEmail()
+    end
     Firebase-->>Client: Firebase User + ID Token
     Client->>Backend: POST /api/auth/sync { token }
     Backend->>Firebase: admin.auth().verifyIdToken(token)
@@ -38,10 +42,11 @@ sequenceDiagram
 - **[firebase/client.ts](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/src/lib/firebase/client.ts)**: Initializes the standard Firebase Web SDK.
 - **[ClientAuthService](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/src/services/client-auth-service.ts)**: A pure service class that wraps Firebase methods. 
     - `loginWithGoogle()`: Triggers the popup.
+    - `registerWithEmail()` / `loginWithEmail()`: Firebase auth methods.
     - `syncUserWithBackend(token)`: Sends the ID token to our API.
 
 ### 2. Frontend (Provider & State)
-- **[AuthProvider](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/src/components/providers/auth-provider.tsx)**: The "Manager". It listens to Firebase's `onAuthStateChanged` and provides the context (`user`, `login`, `logout`) to the whole app.
+- **[AuthProvider](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/src/components/providers/auth-provider.tsx)**: The "Manager". It exposes `login`, `loginWithEmail`, `register`, and `logout` to the application.
 
 ### 3. Backend (Verification & DB Sync)
 - **[firebase/admin.ts](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/src/lib/firebase/admin.ts)**: Initializes the Firebase Admin SDK for secure server-side operations.

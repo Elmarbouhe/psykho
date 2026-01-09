@@ -3,47 +3,40 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { LogIn } from 'lucide-react';
+import { UserPlus, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
 
-export default function LoginPage() {
+export default function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { login, loginWithEmail, user, loading } = useAuth();
+    const { register, user, loading } = useAuth();
     const router = useRouter();
 
+    // Redirect if already logged in
     useEffect(() => {
         if (!loading && user) {
             router.push('/dashboard');
         }
     }, [user, loading, router]);
 
-    const handleGoogleLogin = async () => {
-        try {
-            await login();
-        } catch (error) {
-            // Error is handled in provider
-        }
-    };
-
-    const handleEmailLogin = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setIsSubmitting(true);
 
         try {
-            await loginWithEmail(email, password);
+            await register(email, password);
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message || 'Invalid email or password.');
+            setError(err.message || 'Failed to create account. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -58,16 +51,16 @@ export default function LoginPage() {
             <Card className="border-border bg-card/50 backdrop-blur-xl shadow-2xl">
                 <CardHeader className="text-center space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Welcome to the Sanctuary
+                        Join the Sanctuary
                     </CardTitle>
                     <CardDescription className="text-muted-foreground">
-                        A safe space for your mind to unwind and reflect.
+                        Create an account to start your journey of reflection.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <form onSubmit={handleEmailLogin} className="space-y-4">
+                <CardContent>
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">Email Address</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -100,37 +93,29 @@ export default function LoginPage() {
                         <Button
                             type="submit"
                             className="w-full h-11 transition-all duration-300"
+                            size="lg"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Logging in...' : (
+                            {isSubmitting ? 'Creating account...' : (
                                 <>
-                                    <LogIn className="mr-2 h-4 w-4" />
-                                    Continue with Email
+                                    <UserPlus className="mr-2 h-4 w-4" />
+                                    Sign Up
                                 </>
                             )}
                         </Button>
                     </form>
-
+                </CardContent>
+                <CardFooter className="flex flex-col space-y-4">
                     <div className="relative w-full text-center text-xs uppercase text-muted-foreground">
                         <span className="bg-card px-2">OR</span>
                         <hr className="absolute inset-y-1/2 w-full border-border -z-10" />
                     </div>
-
-                    <Button
-                        onClick={handleGoogleLogin}
-                        variant="outline"
-                        className="w-full h-11 transition-all duration-300"
-                        size="lg"
-                    >
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="mr-2 h-4 w-4" alt="Google" />
-                        Continue with Google
+                    <Button variant="outline" className="w-full" asChild>
+                        <Link href="/login">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            Back to Login
+                        </Link>
                     </Button>
-                </CardContent>
-                <CardFooter className="flex justify-center text-sm text-muted-foreground">
-                    Don't have an account?&nbsp;
-                    <Link href="/register" className="text-primary hover:underline font-medium">
-                        Sign up
-                    </Link>
                 </CardFooter>
             </Card>
         </motion.div>

@@ -2,11 +2,39 @@ import {
     signInWithPopup,
     GoogleAuthProvider,
     signOut,
-    User
+    User,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase/client';
 
 export class ClientAuthService {
+    /**
+     * Registers a new user with email and password.
+     */
+    static async registerWithEmail(email: string, password: string): Promise<User> {
+        try {
+            const result = await createUserWithEmailAndPassword(auth, email, password);
+            return result.user;
+        } catch (error) {
+            console.error('Registration Failed:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Logs in an existing user with email and password.
+     */
+    static async loginWithEmail(email: string, password: string): Promise<User> {
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            return result.user;
+        } catch (error) {
+            console.error('Login Failed:', error);
+            throw error;
+        }
+    }
+
     /**
      * Initiates Google Sign-In flow.
      * @returns The signed-in Firebase User.
