@@ -21,7 +21,8 @@ import { useAuth } from '@/components/providers/auth-provider';
 import {
     Sheet,
     SheetContent,
-    SheetTrigger
+    SheetTrigger,
+    SheetTitle
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from '@/components/providers/language-provider';
@@ -170,7 +171,9 @@ export function Sidebar() {
                             "p-0 bg-card/95 backdrop-blur-2xl w-72 h-full",
                             isRtl ? "border-l-border/50" : "border-r-border/50"
                         )}
+                        aria-describedby={undefined}
                     >
+                        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                         <SidebarContent onClose={() => setOpen(false)} />
                     </SheetContent>
                 </Sheet>
