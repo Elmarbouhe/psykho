@@ -6,6 +6,7 @@ A web application that acts as an AI-powered psychological companion based on Al
 
 **Design System: "The Sanctuary"**
 - **Aesthetic**: Calm, sophisticated Sage Green and Soft Forest Earth tones.
+- **Reference**: Detailed guidelines in [UI_Style_Guide.md](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/Docs/UI_Style_Guide.md).
 - **Micro-interactions**: Smooth transitions and animated ambient orbs powered by `framer-motion`.
 - **Modes**: Deep earthy dark mode and warm neutral light mode.
 
@@ -182,10 +183,11 @@ Storage: Save to insights table.
     - **Pages**: 
         - `src/app/(auth)/login/page.tsx` (Login UI).
         - `src/app/(auth)/register/page.tsx` (Registration UI).
-        - `src/app/dashboard/profile/page.tsx` (Profile Management).
+        - `src/app/(app)/dashboard/page.tsx` (Main Dashboard).
+        - `src/app/(app)/profile/page.tsx` (Profile Management at `/profile`).
 
 ### Route Protection
-- **Strategy**: Client-side layout wrapping (`src/app/dashboard/layout.tsx`).
+- **Strategy**: Shared route group layout wrapping (`src/app/(app)/layout.tsx`).
 - **Behavior**: Redirects unauthenticated users to `/login`.
 
 7. API Routes (Next.js)
