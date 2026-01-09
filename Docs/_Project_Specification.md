@@ -10,6 +10,10 @@ A web application that acts as an AI-powered psychological companion based on Al
 - **Micro-interactions**: Smooth transitions and animated ambient orbs powered by `framer-motion`.
 - **Modes**: Deep earthy dark mode and warm neutral light mode.
 
+**Internationalization (i18n)**
+- **Supported Languages**: English, French, Arabic (RTL).
+- **Reference**: Architecture and extension guide in [i18n_Developer_Guide.md](file:///Users/yahiaelmarbouh/yahyaWork/training/psykho/Docs/i18n_Developer_Guide.md).
+
 2. Tech Stack & Architecture
 
 Framework: Next.js 14+ (App Router)

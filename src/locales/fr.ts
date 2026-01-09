@@ -1,0 +1,38 @@
+export const fr = {
+    common: {
+        loading: 'Chargement...',
+        save: 'Enregistrer',
+        cancel: 'Annuler',
+        signOut: 'Se déconnecter',
+        welcome: 'Bon retour,',
+    },
+    sidebar: {
+        dashboard: 'Tableau de bord',
+        dialogue: 'Dialogue',
+        checkIn: 'Journal',
+        insights: 'Analyses',
+        profile: 'Profil',
+        appName: 'Psykho',
+    },
+    profile: {
+        title: 'Votre Profil',
+        description: 'Fournissez quelques informations pour aider votre compagnon IA à mieux vous comprendre.',
+        fullName: 'Nom complet',
+        age: 'Âge',
+        occupation: 'Profession',
+        currentGoal: 'Objectif actuel',
+        safeSpace: 'Mon refuge',
+        saveProfile: 'Enregistrer le profil',
+        saving: 'Enregistrement...',
+        success: 'Profil mis à jour avec succès !',
+        error: 'Échec de la mise à jour du profil',
+        placeholders: {
+            name: 'Jean Dupont',
+            age: '25',
+            occupation: 'Ingénieur logiciel, Designer...',
+            currentGoal: 'Réduire l\'anxiété, mieux dormir...',
+            safeSpace: "Décrivez un endroit qui vous apaise (ex: 'la plage au coucher du soleil')...",
+        },
+        language: 'Langue',
+    },
+};

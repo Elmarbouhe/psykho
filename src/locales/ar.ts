@@ -1,0 +1,38 @@
+export const ar = {
+    common: {
+        loading: 'جاري التحميل...',
+        save: 'حفظ',
+        cancel: 'إلغاء',
+        signOut: 'تسجيل الخروج',
+        welcome: 'مرحبًا بعودتك،',
+    },
+    sidebar: {
+        dashboard: 'لوحة القيادة',
+        dialogue: 'الحوار',
+        checkIn: 'تسجيل الدخول',
+        insights: 'رؤى',
+        profile: 'الملف الشخصي',
+        appName: 'سايكو',
+    },
+    profile: {
+        title: 'ملفك الشخصي',
+        description: 'قدم بعض المعلومات لمساعدة رفيقك الذكي في فهمك بشكل أفضل.',
+        fullName: 'الاسم الكامل',
+        age: 'العمر',
+        occupation: 'المهنة',
+        currentGoal: 'الهدف الحالي',
+        safeSpace: 'مكاني الآمن',
+        saveProfile: 'حفظ الملف الشخصي',
+        saving: 'جاري الحفظ...',
+        success: 'تم تحديث الملف الشخصي بنجاح!',
+        error: 'فشل تحديث الملف الشخصي',
+        placeholders: {
+            name: 'أحمد محمد',
+            age: '٢٥',
+            occupation: 'مهندس برمجيات، مصمم...',
+            currentGoal: 'تقليل القلق، النوم بشكل أفضل...',
+            safeSpace: "صف مكانًا يجعلك تشعر بالسلام (مثال: 'الشاطئ عند الغروب')...",
+        },
+        language: 'اللغة',
+    },
+};

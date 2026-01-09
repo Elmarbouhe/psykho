@@ -9,9 +9,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/components/providers/auth-provider';
+import { useTranslation } from '@/components/providers/language-provider';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 export default function ProfilePage() {
     const { user } = useAuth();
+    const { t, setLanguage, language } = useTranslation();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -23,6 +32,7 @@ export default function ProfilePage() {
         occupation: '',
         currentGoal: '',
         safeSpace: '',
+        language: '',
     });
 
     useEffect(() => {
@@ -43,18 +53,23 @@ export default function ProfilePage() {
                         occupation: data.profile.occupation || '',
                         currentGoal: data.profile.currentGoal || '',
                         safeSpace: data.profile.safeSpace || '',
+                        language: data.profile.language || 'en',
                     });
+                    // Sync global language with fetched profile
+                    if (data.profile.language) {
+                        setLanguage(data.profile.language as any);
+                    }
                 }
             } catch (err) {
                 console.error('Failed to fetch profile:', err);
-                setError('Failed to load profile data.');
+                setError(t('profile.error'));
             } finally {
                 setLoading(false);
             }
         }
 
         fetchProfile();
-    }, [user]);
+    }, [user, setLanguage]); // Added setLanguage dependency, removed t to avoid loops if t changes (it shouldn't generally)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -81,11 +96,15 @@ export default function ProfilePage() {
             const data = await response.json();
             if (data.success) {
                 setSuccess(true);
+                // Update global language on successful save
+                if (formData.language) {
+                    setLanguage(formData.language as any);
+                }
             } else {
-                throw new Error(data.error || 'Failed to update profile');
+                throw new Error(data.error || t('profile.error'));
             }
         } catch (err: any) {
-            setError(err.message || 'Failed to save profile.');
+            setError(err.message || t('profile.error'));
         } finally {
             setSaving(false);
         }
@@ -114,34 +133,52 @@ export default function ProfilePage() {
                 <Card className="border-border bg-card/50 backdrop-blur-xl shadow-xl">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                            Your Profile
+                            {t('profile.title')}
                         </CardTitle>
                         <CardDescription>
-                            Provide some information to help your AI companion understand you better.
+                            {t('profile.description')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={handleSubmit} className="space-y-6">
+
+                            <div className="space-y-2">
+                                <Label>{t('profile.language')}</Label>
+                                <Select
+                                    value={formData.language}
+                                    onValueChange={(val) => setFormData(prev => ({ ...prev, language: val }))}
+                                >
+                                    <SelectTrigger className="bg-background/50">
+                                        <SelectValue placeholder="Select Language" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="en">English</SelectItem>
+                                        <SelectItem value="fr">Français</SelectItem>
+                                        <SelectItem value="ar">العربية</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="name">Full Name</Label>
+                                    <Label htmlFor="name">{t('profile.fullName')}</Label>
                                     <div className="relative">
-                                        <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                        <User className="absolute rtl:right-3 rtl:left-auto left-3 top-3 h-4 w-4 text-muted-foreground" />
                                         <Input
                                             id="name"
-                                            placeholder="John Doe"
-                                            className="pl-9 bg-background/50"
+                                            placeholder={t('profile.placeholders.name')}
+                                            className="rtl:pr-9 rtl:pl-3 pl-9 bg-background/50"
                                             value={formData.name}
                                             onChange={handleChange}
                                         />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="age">Age</Label>
+                                    <Label htmlFor="age">{t('profile.age')}</Label>
                                     <Input
                                         id="age"
                                         type="number"
-                                        placeholder="25"
+                                        placeholder={t('profile.placeholders.age')}
                                         className="bg-background/50"
                                         value={formData.age}
                                         onChange={handleChange}
@@ -150,13 +187,13 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="occupation">Occupation</Label>
+                                <Label htmlFor="occupation">{t('profile.occupation')}</Label>
                                 <div className="relative">
-                                    <Briefcase className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                    <Briefcase className="absolute rtl:right-3 rtl:left-auto left-3 top-3 h-4 w-4 text-muted-foreground" />
                                     <Input
                                         id="occupation"
-                                        placeholder="Software Engineer, Designer..."
-                                        className="pl-9 bg-background/50"
+                                        placeholder={t('profile.placeholders.occupation')}
+                                        className="rtl:pr-9 rtl:pl-3 pl-9 bg-background/50"
                                         value={formData.occupation}
                                         onChange={handleChange}
                                     />
@@ -164,13 +201,13 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="currentGoal">Current Goal</Label>
+                                <Label htmlFor="currentGoal">{t('profile.currentGoal')}</Label>
                                 <div className="relative">
-                                    <Target className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                    <Target className="absolute rtl:right-3 rtl:left-auto left-3 top-3 h-4 w-4 text-muted-foreground" />
                                     <Input
                                         id="currentGoal"
-                                        placeholder="Reduce anxiety, sleep better..."
-                                        className="pl-9 bg-background/50"
+                                        placeholder={t('profile.placeholders.currentGoal')}
+                                        className="rtl:pr-9 rtl:pl-3 pl-9 bg-background/50"
                                         value={formData.currentGoal}
                                         onChange={handleChange}
                                     />
@@ -178,13 +215,13 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="safeSpace">"My Safe Space"</Label>
+                                <Label htmlFor="safeSpace">{t('profile.safeSpace')}</Label>
                                 <div className="relative">
-                                    <Map className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                                    <Map className="absolute rtl:right-3 rtl:left-auto left-3 top-3 h-4 w-4 text-muted-foreground" />
                                     <Textarea
                                         id="safeSpace"
-                                        placeholder="Describe a place that makes you feel peaceful (e.g., 'the beach at sunset')..."
-                                        className="pl-9 bg-background/50 min-h-[100px]"
+                                        placeholder={t('profile.placeholders.safeSpace')}
+                                        className="rtl:pr-9 rtl:pl-3 pl-9 bg-background/50 min-h-[100px]"
                                         value={formData.safeSpace}
                                         onChange={handleChange}
                                     />
@@ -199,7 +236,7 @@ export default function ProfilePage() {
 
                             {success && (
                                 <div className="text-sm text-primary bg-primary/10 p-3 rounded-md">
-                                    Profile updated successfully!
+                                    {t('profile.success')}
                                 </div>
                             )}
 
@@ -207,12 +244,12 @@ export default function ProfilePage() {
                                 {saving ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Saving Changes...
+                                        {t('profile.saving')}
                                     </>
                                 ) : (
                                     <>
-                                        <Save className="mr-2 h-4 w-4" />
-                                        Save Profile
+                                        <Save className="rtl:ml-2 rtl:mr-0 mr-2 h-4 w-4" />
+                                        {t('profile.saveProfile')}
                                     </>
                                 )}
                             </Button>

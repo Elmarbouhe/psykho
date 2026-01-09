@@ -6,6 +6,7 @@ export interface ProfileData {
     occupation?: string | null;
     currentGoal?: string | null;
     safeSpace?: string | null;
+    language?: string | null;
 }
 
 export class ProfileService {
@@ -22,6 +23,7 @@ export class ProfileService {
                     occupation: true,
                     currentGoal: true,
                     safeSpace: true,
+                    language: true,
                     email: true,
                 },
             });
@@ -43,6 +45,7 @@ export class ProfileService {
                     occupation: data.occupation,
                     currentGoal: data.currentGoal,
                     safeSpace: data.safeSpace,
+                    language: data.language,
                 },
             });
             console.log(`[ProfileService] Profile updated successfully for ${userId}`);

@@ -32,6 +32,7 @@ model User {
   occupation   String?
   currentGoal  String?       @map("current_goal")
   safeSpace    String?       @map("safe_space") @db.Text
+  language     String?       @default("en")
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   dailyLogs    DailyLog[]

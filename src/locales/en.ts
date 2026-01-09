@@ -1,0 +1,38 @@
+export const en = {
+    common: {
+        loading: 'Loading...',
+        save: 'Save',
+        cancel: 'Cancel',
+        signOut: 'Sign Out',
+        welcome: 'Welcome back,',
+    },
+    sidebar: {
+        dashboard: 'Dashboard',
+        dialogue: 'Dialogue',
+        checkIn: 'Check-in',
+        insights: 'Insights',
+        profile: 'Profile',
+        appName: 'Psykho',
+    },
+    profile: {
+        title: 'Your Profile',
+        description: 'Provide some information to help your AI companion understand you better.',
+        fullName: 'Full Name',
+        age: 'Age',
+        occupation: 'Occupation',
+        currentGoal: 'Current Goal',
+        safeSpace: 'My Safe Space',
+        saveProfile: 'Save Profile',
+        saving: 'Saving Changes...',
+        success: 'Profile updated successfully!',
+        error: 'Failed to update profile',
+        placeholders: {
+            name: 'John Doe',
+            age: '25',
+            occupation: 'Software Engineer, Designer...',
+            currentGoal: 'Reduce anxiety, sleep better...',
+            safeSpace: "Describe a place that makes you feel peaceful (e.g., 'the beach at sunset')...",
+        },
+        language: 'Language',
+    },
+};

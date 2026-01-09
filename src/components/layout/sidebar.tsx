@@ -24,6 +24,11 @@ import {
     SheetTrigger
 } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/components/providers/language-provider';
+
+interface SidebarContentProps {
+    onClose?: () => void;
+}
 
 const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -33,13 +38,19 @@ const navigation = [
     { name: 'Profile', href: '/profile', icon: User },
 ];
 
-interface SidebarContentProps {
-    onClose?: () => void;
-}
-
 function SidebarContent({ onClose }: SidebarContentProps) {
     const pathname = usePathname();
     const { logout, user } = useAuth();
+    const { t, dir } = useTranslation();
+    const isRtl = dir === 'rtl';
+
+    const navigation = [
+        { name: t('sidebar.dashboard'), href: '/dashboard', icon: LayoutDashboard },
+        { name: t('sidebar.dialogue'), href: '/dialogue', icon: MessageSquare },
+        { name: t('sidebar.checkIn'), href: '/check-in', icon: Calendar },
+        { name: t('sidebar.insights'), href: '/insights', icon: BarChart3 },
+        { name: t('sidebar.profile'), href: '/profile', icon: User },
+    ];
 
     return (
         <div className="flex h-full flex-col">
@@ -53,7 +64,7 @@ function SidebarContent({ onClose }: SidebarContentProps) {
                         <Leaf className="h-5 w-5" />
                     </div>
                     <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Psykho
+                        {t('sidebar.appName')}
                     </span>
                 </Link>
             </div>
@@ -63,7 +74,7 @@ function SidebarContent({ onClose }: SidebarContentProps) {
                     const isActive = pathname === item.href;
                     return (
                         <Link
-                            key={item.name}
+                            key={item.href}
                             href={item.href}
                             onClick={onClose}
                             className={cn(
@@ -75,13 +86,17 @@ function SidebarContent({ onClose }: SidebarContentProps) {
                         >
                             <item.icon className={cn(
                                 "h-5 w-5 transition-colors",
-                                isActive ? "text-primary" : "text-muted-foreground group-hover:text-accent-foreground"
+                                isActive ? "text-primary" : "text-muted-foreground group-hover:text-accent-foreground",
+                                isRtl && "transform scale-x-[-1]" // Optional: mirror icons if needed, though Lucide is usually directional neutral
                             )} />
                             {item.name}
                             {isActive && (
                                 <motion.div
                                     layoutId="sidebar-active"
-                                    className="absolute left-0 h-6 w-1 rounded-r-full bg-primary"
+                                    className={cn(
+                                        "absolute top-0 bottom-0 w-1 bg-primary",
+                                        isRtl ? "right-0 rounded-l-full" : "left-0 rounded-r-full"
+                                    )}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.2 }}
@@ -109,8 +124,8 @@ function SidebarContent({ onClose }: SidebarContentProps) {
                     }}
                     className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
                 >
-                    <LogOut className="h-5 w-5" />
-                    Sign Out
+                    <LogOut className={cn("h-5 w-5", isRtl && "transform rotate-180")} />
+                    {t('common.signOut')}
                 </button>
             </div>
         </div>
@@ -119,11 +134,16 @@ function SidebarContent({ onClose }: SidebarContentProps) {
 
 export function Sidebar() {
     const [open, setOpen] = useState(false);
+    const { dir } = useTranslation();
+    const isRtl = dir === 'rtl';
 
     return (
         <>
             {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex h-full w-64 flex-col border-r border-border/50 bg-card/50 backdrop-blur-xl shrink-0">
+            <aside className={cn(
+                "hidden lg:flex h-full w-64 flex-col bg-card/50 backdrop-blur-xl shrink-0 transition-all duration-300",
+                isRtl ? "border-l border-border/50" : "border-r border-border/50"
+            )}>
                 <SidebarContent />
             </aside>
 
@@ -144,7 +164,13 @@ export function Sidebar() {
                             <Menu className="h-6 w-6" />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="p-0 border-r-border/50 bg-card/95 backdrop-blur-2xl w-72">
+                    <SheetContent
+                        side={isRtl ? "right" : "left"}
+                        className={cn(
+                            "p-0 bg-card/95 backdrop-blur-2xl w-72 h-full",
+                            isRtl ? "border-l-border/50" : "border-r-border/50"
+                        )}
+                    >
                         <SidebarContent onClose={() => setOpen(false)} />
                     </SheetContent>
                 </Sheet>
