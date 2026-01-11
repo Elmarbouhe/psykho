@@ -35,4 +35,12 @@ export const fr = {
         },
         language: 'Langue',
     },
+    chat: {
+        title: 'Compagnon Bana',
+        subtitle: "Je suis ici pour vous écouter, réfléchir et vous soutenir. C'est un espace sûr.",
+        question: "Comment vous sentez-vous aujourd'hui ?",
+        thinking: 'Psykho réfléchit...',
+        inputPlaceholder: 'Écrivez un message...',
+        disclaimer: "Le contenu généré par l'IA peut être inexact.",
+    },
 };

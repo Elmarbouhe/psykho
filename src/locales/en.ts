@@ -35,4 +35,12 @@ export const en = {
         },
         language: 'Language',
     },
+    chat: {
+        title: 'Bana Companion',
+        subtitle: "I'm here to listen, reflect, and support you. This is a safe space.",
+        question: 'How are you feeling today?',
+        thinking: 'Psykho is thinking...',
+        inputPlaceholder: 'Type a message...',
+        disclaimer: 'AI-generated content may be inaccurate.',
+    },
 };
