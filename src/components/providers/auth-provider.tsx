@@ -48,7 +48,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             const token = await signedInUser.getIdToken();
 
             // 3. Sync with Backend
-            await ClientAuthService.syncUserWithBackend(token);
+            const currentLang = localStorage.getItem('psykho-lang') || 'en';
+            await ClientAuthService.syncUserWithBackend(token, currentLang);
         } catch (error) {
             console.error('Login flow failed:', error);
             throw error;
@@ -59,7 +60,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             const signedInUser = await ClientAuthService.loginWithEmail(email, password);
             const token = await signedInUser.getIdToken();
-            await ClientAuthService.syncUserWithBackend(token);
+            const currentLang = localStorage.getItem('psykho-lang') || 'en';
+            await ClientAuthService.syncUserWithBackend(token, currentLang);
         } catch (error) {
             console.error('Email Login failed:', error);
             throw error;
@@ -70,7 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             const newUser = await ClientAuthService.registerWithEmail(email, password);
             const token = await newUser.getIdToken();
-            await ClientAuthService.syncUserWithBackend(token);
+            const currentLang = localStorage.getItem('psykho-lang') || 'en';
+            await ClientAuthService.syncUserWithBackend(token, currentLang);
         } catch (error) {
             console.error('Email Registration failed:', error);
             throw error;

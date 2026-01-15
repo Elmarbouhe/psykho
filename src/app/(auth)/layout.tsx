@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { LanguageSwitcher } from '@/components/layout/language-switcher';
 
 export default function AuthLayout({
     children,
@@ -9,6 +10,11 @@ export default function AuthLayout({
 }) {
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-background relative overflow-hidden transition-colors duration-500">
+            {/* Top Bar with Language Switcher */}
+            <div className="absolute top-4 right-4 z-50">
+                <LanguageSwitcher />
+            </div>
+
             {/* Background Decor */}
             <div className="absolute inset-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
 

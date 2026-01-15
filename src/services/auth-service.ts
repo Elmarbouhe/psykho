@@ -10,7 +10,7 @@ export class AuthService {
      * @param token - The Firebase ID token sent from the client
      * @returns The synchronized Prisma User object
      */
-    static async verifyAndSyncUser(token: string) {
+    static async verifyAndSyncUser(token: string, language?: string) {
         try {
             // 1. Verify the ID token with Firebase Admin
             const decodedToken = await adminAuth.verifyIdToken(token);
@@ -23,6 +23,7 @@ export class AuthService {
                 create: {
                     id: uid,
                     email: email || null,
+                    language: language || 'en', // Set initial language if provided
                 },
             });
 

@@ -66,14 +66,14 @@ export class ClientAuthService {
      * Calls the backend API to synchronize the Firebase user with PostgreSQL.
      * @param token - Firebase ID Token
      */
-    static async syncUserWithBackend(token: string) {
+    static async syncUserWithBackend(token: string, language?: string) {
         try {
             const response = await fetch('/api/auth/sync', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ token }),
+                body: JSON.stringify({ token, language }),
             });
 
             if (!response.ok) {

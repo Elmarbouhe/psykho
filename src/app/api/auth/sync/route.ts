@@ -4,7 +4,7 @@ import { AuthService } from '@/services/auth-service';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { token } = body;
+        const { token, language } = body;
 
         if (!token) {
             return NextResponse.json(
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         }
 
         // Delegate business logic to the Service Layer
-        const user = await AuthService.verifyAndSyncUser(token);
+        const user = await AuthService.verifyAndSyncUser(token, language);
 
         return NextResponse.json({ success: true, user });
     } catch (error) {

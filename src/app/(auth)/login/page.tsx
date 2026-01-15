@@ -10,8 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/components/providers/auth-provider';
+import { useTranslation } from '@/components/providers/language-provider';
 
 export default function LoginPage() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -58,20 +60,20 @@ export default function LoginPage() {
             <Card className="border-border bg-card/50 backdrop-blur-xl shadow-2xl">
                 <CardHeader className="text-center space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Welcome to the Sanctuary
+                        {t('auth.loginTitle')}
                     </CardTitle>
                     <CardDescription className="text-muted-foreground">
-                        A safe space for your mind to unwind and reflect.
+                        {t('auth.loginSubtitle')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <form onSubmit={handleEmailLogin} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">{t('auth.emailLabel')}</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="name@example.com"
+                                placeholder={t('auth.emailPlaceholder')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -79,11 +81,11 @@ export default function LoginPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="••••••••"
+                                placeholder={t('auth.passwordPlaceholder')}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -102,34 +104,34 @@ export default function LoginPage() {
                             className="w-full h-11 transition-all duration-300"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Logging in...' : (
+                            {isSubmitting ? t('auth.loggingIn') : (
                                 <>
-                                    <LogIn className="mr-2 h-4 w-4" />
-                                    Continue with Email
+                                    <LogIn className="rtl:ml-2 rtl:mr-0 mr-2 h-4 w-4" />
+                                    {t('auth.loginButton')}
                                 </>
                             )}
                         </Button>
                     </form>
 
                     <div className="relative w-full text-center text-xs uppercase text-muted-foreground">
-                        <span className="bg-card px-2">OR</span>
+                        <span className="bg-card px-2">{t('auth.or')}</span>
                         <hr className="absolute inset-y-1/2 w-full border-border -z-10" />
                     </div>
 
                     <Button
                         onClick={handleGoogleLogin}
                         variant="outline"
-                        className="w-full h-11 transition-all duration-300"
+                        className="w-full h-11 transition-all duration-300 text-[10px] sm:text-sm"
                         size="lg"
                     >
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="mr-2 h-4 w-4" alt="Google" />
-                        Continue with Google
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="rtl:ml-2 rtl:mr-0 mr-2 h-4 w-4" alt={t('auth.googleAlt')} />
+                        {t('auth.googleButton')}
                     </Button>
                 </CardContent>
                 <CardFooter className="flex justify-center text-sm text-muted-foreground">
-                    Don't have an account?&nbsp;
+                    {t('auth.noAccount')}&nbsp;
                     <Link href="/register" className="text-primary hover:underline font-medium">
-                        Sign up
+                        {t('auth.signUpLink')}
                     </Link>
                 </CardFooter>
             </Card>

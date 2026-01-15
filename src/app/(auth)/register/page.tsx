@@ -10,8 +10,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/providers/auth-provider';
+import { useTranslation } from '@/components/providers/language-provider';
 
 export default function RegisterPage() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
@@ -51,20 +53,20 @@ export default function RegisterPage() {
             <Card className="border-border bg-card/50 backdrop-blur-xl shadow-2xl">
                 <CardHeader className="text-center space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Join the Sanctuary
+                        {t('auth.registerTitle')}
                     </CardTitle>
                     <CardDescription className="text-muted-foreground">
-                        Create an account to start your journey of reflection.
+                        {t('auth.registerSubtitle')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email Address</Label>
+                            <Label htmlFor="email">{t('auth.emailLabel')}</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="name@example.com"
+                                placeholder={t('auth.emailPlaceholder')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -72,11 +74,11 @@ export default function RegisterPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
+                            <Label htmlFor="password">{t('auth.passwordLabel')}</Label>
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="••••••••"
+                                placeholder={t('auth.passwordPlaceholder')}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -96,10 +98,10 @@ export default function RegisterPage() {
                             size="lg"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Creating account...' : (
+                            {isSubmitting ? t('auth.creatingAccount') : (
                                 <>
-                                    <UserPlus className="mr-2 h-4 w-4" />
-                                    Sign Up
+                                    <UserPlus className="rtl:ml-2 rtl:mr-0 mr-2 h-4 w-4" />
+                                    {t('auth.registerButton')}
                                 </>
                             )}
                         </Button>
@@ -107,13 +109,13 @@ export default function RegisterPage() {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-4">
                     <div className="relative w-full text-center text-xs uppercase text-muted-foreground">
-                        <span className="bg-card px-2">OR</span>
+                        <span className="bg-card px-2">{t('auth.or')}</span>
                         <hr className="absolute inset-y-1/2 w-full border-border -z-10" />
                     </div>
                     <Button variant="outline" className="w-full" asChild>
                         <Link href="/login">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to Login
+                            <ArrowLeft className="rtl:ml-2 rtl:mr-0 mr-2 h-4 w-4" />
+                            {t('auth.backToLogin')}
                         </Link>
                     </Button>
                 </CardFooter>
