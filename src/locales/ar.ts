@@ -65,4 +65,27 @@ export const ar = {
         passwordPlaceholder: '••••••••',
         googleAlt: 'جوجل',
     },
+    dashboard: {
+        title: 'الملاذ',
+        subtitle: 'كيف تشعر الآن؟',
+        mood: {
+            joyful: 'سعيد',
+            calm: 'هادئ',
+            sad: 'حزين',
+            anxious: 'قلق',
+        },
+        insight: {
+            title: 'تأمل',
+        },
+        action: {
+            title: 'إجراء مقترح',
+        },
+        plant: {
+            growing: 'تنمو',
+            blooming: 'تزهر',
+            tooltip: 'سجل الدخول لمدة 3 أيام متتالية لترى نبتتك تزهر.',
+        },
+        alreadyCheckedIn: 'لقد سجلت دخولك بالفعل اليوم. ملاذك ينمو.',
+        streak: 'تتابع',
+    },
 };

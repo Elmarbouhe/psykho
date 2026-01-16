@@ -65,4 +65,27 @@ export const fr = {
         passwordPlaceholder: '••••••••',
         googleAlt: 'Google',
     },
+    dashboard: {
+        title: 'Le Sanctuaire',
+        subtitle: 'Comment vous sentez-vous maintenant ?',
+        mood: {
+            joyful: 'Joyeux',
+            calm: 'Calme',
+            sad: 'Triste',
+            anxious: 'Anxieux',
+        },
+        insight: {
+            title: 'Réflexion',
+        },
+        action: {
+            title: 'Action Recommandée',
+        },
+        plant: {
+            growing: 'En croissance',
+            blooming: 'En floraison',
+            tooltip: 'Connectez-vous 3 jours de suite pour voir votre plante fleurir.',
+        },
+        alreadyCheckedIn: 'Vous avez déjà validé votre présence aujourd\'hui. Votre sanctuaire grandit.',
+        streak: 'Série',
+    },
 };

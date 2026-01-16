@@ -65,4 +65,27 @@ export const en = {
         passwordPlaceholder: '••••••••',
         googleAlt: 'Google',
     },
+    dashboard: {
+        title: 'The Sanctuary',
+        subtitle: 'How are you feeling right now?',
+        mood: {
+            joyful: 'Joyful',
+            calm: 'Calm',
+            sad: 'Sad',
+            anxious: 'Anxious',
+        },
+        insight: {
+            title: 'Reflection',
+        },
+        action: {
+            title: 'Recommended Action',
+        },
+        plant: {
+            growing: 'Growing',
+            blooming: 'Blooming',
+            tooltip: 'Log in 3 days in a row to see your plant bloom.',
+        },
+        alreadyCheckedIn: 'You have already checked in today. Your sanctuary is growing.',
+        streak: 'Streak',
+    },
 };
