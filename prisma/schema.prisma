@@ -48,6 +48,7 @@ model DailyLog {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   mood         Mood
   aiReflection String   @map("ai_reflection") @db.Text
+  aiAction     String   @map("ai_action") @db.Text
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("daily_logs")
